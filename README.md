@@ -1,5 +1,5 @@
 # AudioIO
-C# source code for input/output audio in WinForms/WPF.
+C# source code for input/output audio in WinForms/WPF.  
 The library consists of 2 classes.
 
 ## AudioInput
@@ -78,3 +78,36 @@ static class WaveEx
 
 # How to use
 Add AudioIO.cs to your project.
+
+# Example
+You can make MotionJPEG video recorder by using [MotionJPEGWriter](https://github.com/secile/MotionJPEGWriter/) and [UsbCamera](https://github.com/secile/UsbCamera/).
+
+```C#
+// create mjpeg writer.
+var path = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\test.avi";
+var output = System.IO.File.OpenWrite(path);
+var videoFormat = new GitHub.secile.Avi.AviWriter.VideoFormat() { Width = 640, Height = 480, FramesPerSec = 10 };
+var audioFormat = new GitHub.secile.Avi.AviWriter.AudioFormat() { SamplesPerSec = 44100, BitsPerSample = 16, Channels = 2 };
+var avi = new GitHub.secile.Avi.MjpegWriter(output, videoFormat, audioFormat);
+
+// start video capture every 10 times per second.
+var camera = new GitHub.secile.Video.UsbCamera(0, new Size(640, 480));
+camera.Start();
+var timer = new System.Timers.Timer(1000 / 10) { SynchronizingObject = this };
+timer.Elapsed += (s, ev) => avi.AddImage(camera.GetBitmap());
+timer.Start();
+
+// start audio sampling every second.
+var audioInput = new GitHub.secile.Audio.AudioInput(44100, 16, 2);
+audioInput.Start(data => avi.AddAudio(data));
+
+// release
+this.FormClosing += (s, ev) =>
+{
+    timer.Stop();
+    audioInput.Stop();
+    audioInput.Close();
+    camera.Stop();
+    avi.Close();
+};
+```
