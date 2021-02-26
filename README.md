@@ -41,6 +41,7 @@ var device = new AudioOutput(44100, 16, 1);
 device.WriteStart(() =>
 {
     // called when each buffer becomes empty and request more data.
+    const double freq = 1000;
     var sign_wave = WaveEx.SineWave(freq, 44100, short.MaxValue, 0).Select(x => (short)x).Take(44100).ToArray().ToLittleEndian();
     return sign_wave;
 });
