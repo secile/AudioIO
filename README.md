@@ -1,5 +1,6 @@
 # AudioIO
 C# source code for input/output audio wave data in WinForms/WPF.  
+With only single CSharp source code. No external library required.
 
 # How to use
 Add AudioIO.cs to your project.  
