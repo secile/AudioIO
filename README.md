@@ -1,5 +1,8 @@
 # AudioIO
-C# source code for input/output audio in WinForms/WPF.  
+C# source code for input/output audio wave data in WinForms/WPF.  
+
+# How to use
+Add AudioIO.cs to your project.  
 The library consists of 2 classes.
 
 ## AudioInput
@@ -77,10 +80,21 @@ static class WaveEx
 }
 ```
 
-# How to use
-Add AudioIO.cs to your project.
+# Example1
+Record audio, and playback it.
+```C#
+var samplesPerSec = 44100; // try 'samplesPerSec = 8000', like a telephone!
+var output = new GitHub.secile.Audio.AudioOutput(samplesPerSec, 16, 2);
+var input = new GitHub.secile.Audio.AudioInput(samplesPerSec, 16, 2);
 
-# Example
+var bufferSize = input.BytesPerSec / 2; // You can hear your voice late. To reduce the delay, reduce bufferSize value. (ex: BytesPerSec / 10)
+input.Start(data =>
+{
+    output.Write(data);
+}, bufferSize);
+```
+
+# Example2
 You can make MotionJPEG video recorder by using [MotionJPEGWriter](https://github.com/secile/MotionJPEGWriter/) and [UsbCamera](https://github.com/secile/UsbCamera/).
 
 ```C#
