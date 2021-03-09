@@ -82,7 +82,7 @@ static class WaveEx
 ```
 
 # Example1
-Record audio, and playback it.
+Sampling audio, and play back it. Be careful about howling if you are using mic and speaker.
 ```C#
 var samplesPerSec = 44100; // try 'samplesPerSec = 8000', like a telephone!
 var output = new GitHub.secile.Audio.AudioOutput(samplesPerSec, 16, 2);
